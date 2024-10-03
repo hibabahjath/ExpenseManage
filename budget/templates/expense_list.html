@@ -1,0 +1,75 @@
+{%extends 'base.html'%}
+
+{%block main_block%}
+
+<div class="container">
+    <div class="w-50 mx-auto mt-5">
+        <form action="">
+
+            <select name="category" id="" class="form-select" onchange="this.form.submit()">
+                <option value="all" {%if selected == "all" %} selected {%endif%}>All</option>
+
+                <option value="food" {%if selected == "food" %} selected {%endif%}>Food</option>
+                <option value="travel"{%if selected == "travel" %} selected {%endif%}>Travel</option>
+                <option value="health"{%if selected == "health" %} selected {%endif%}>Health</option>
+
+                <option value="other"{%if selected == "other" %} selected {%endif%}>Other</option>
+
+            </select>
+            <!-- <button type="submit">Fetch</button> -->
+        </form>
+
+        
+
+    </div>
+</div>
+
+
+<div class="container">
+
+              
+
+    <div class="row mt-5">
+        {%for e in expense%}
+            
+        <div class="col-4">
+
+            <div class="card text-bg-dark mb-3" style="max-width: 18rem;">
+                <div class="card-header d-flex justify-content-between">
+                    <div> {{e.user}} </div>
+                 
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{e.title}}</h5>
+                    <p class="card-text">{{e.amount}}</p>
+                      <p class="card-text"> {{e.category}}</p>
+                    
+                </div>
+                <div class="card-footer text-body-white">
+                    created_date:{{e.created_date | date}}
+                   
+
+                    <div>
+                        <a class="btn btn-dark" href="{% url 'exp-edit' e.id %}" role="button">View</a>
+
+                        <a class="btn btn-dark" href="{% url 'exp-delete' e.id %}" role="button">Delete</a>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            {%endfor%}
+
+        </div>
+
+        
+    </div>
+
+    </div>
+</div>
+
+
+
+
+{%endblock%}
+{%block script_block%}
+{%endblock%}

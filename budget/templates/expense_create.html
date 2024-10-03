@@ -1,0 +1,46 @@
+{%extends 'base.html'%}
+
+{%block main_block%}
+    
+     <div class="container">
+        <div class="row mt-5">
+            <div class="col-4"></div>
+            <div class="col-4">
+    
+                {%if messages%}
+    
+                    {%for e in messages%}
+    
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        {{e}}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {%endfor%}
+    
+                {%endif%}
+    
+            </div>
+            <div class="col-4"></div>
+        </div>
+    </div> 
+
+    <div class="container">
+       <div class="row">
+        <div class="col-4"></div>
+        <div class="col-4">
+            
+
+            <form action="" method="post">
+                {%csrf_token%}
+                {{form}}
+
+                <button type="submit">ADD</button>
+            </form>
+        </div>
+        <div class="col-4"></div>
+       </div>
+    </div>
+
+{%endblock%}
+{%block script_block%}
+{%endblock%}
