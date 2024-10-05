@@ -24,22 +24,26 @@
         </div>
     </div> 
 
-    <div class="container">
-       <div class="row">
-        <div class="col-4"></div>
-        <div class="col-4">
-            
-
-            <form action="" method="post">
-                {%csrf_token%}
-                {{form}}
-
-                <button type="submit">ADD</button>
-            </form>
+    
+    
+    
+    <div class="container mt-3" >
+        <div class="row  border border-2 rounded shadow mx-auto" style="width: 50%; background-color: lightskyblue;">
+            <h3 class="mt-5 mb-3 " style="text-align: center;"></h3>
+            <div class="col-2 "></div>
+            <div class="col-6 "> 
+    
+                <form action="" method="post">
+                    {%csrf_token%}
+                    {{form}}
+                    <button type="submit" class="mt-2 mb-3 " style="background-color: rgb(14, 14, 250);">Create</button>
+                </form>
+            </div>
+            </div>
         </div>
-        <div class="col-4"></div>
-       </div>
     </div>
+    
+   
 
 {%endblock%}
 {%block script_block%}

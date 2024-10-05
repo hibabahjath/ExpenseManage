@@ -2,13 +2,51 @@ from django.shortcuts import render,redirect
 
 from django.views.generic import View
 
-from budget.forms import ExpenseForm
+from budget.forms import ExpenseForm,RegistrationForm,SignInForm
 
 from django.contrib import messages
 
 from budget.models import Expense
 
+from django.contrib.auth.models import User
+
 # Create your views here.
+
+class SignUpView(View):
+
+    template_name="register.html"
+
+    def get(self,request,*args,**kwargs):
+
+        form_instance=RegistrationForm()
+
+        return render(request,self.template_name,{"form":form_instance})
+    
+    def post(self,request,*args,**kwargs):
+
+        form_instance=RegistrationForm(request.POST)
+
+        if form_instance.is_valid():
+
+            data=form_instance.cleaned_data
+
+            User.objects.create_user(**data)
+
+            return redirect("login")
+        
+        else:
+
+            return render(request,self.template_name,{"form":form_instance})
+        
+class SignInView(View):
+
+    template_name="login.html"
+
+    def get(self,request,*args,**kwargs):
+
+        form_instance=SignInForm()
+
+        return render(request,self.template_name,{"form":form_instance})
 
 class ExpenseAddView(View):
 
