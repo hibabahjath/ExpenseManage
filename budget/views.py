@@ -10,6 +10,12 @@ from budget.models import Expense
 
 from django.contrib.auth.models import User
 
+from django.contrib.auth import authenticate,login,logout
+
+from django.utils.decorators import method_decorator
+
+from budget.decorators import signin_required
+
 # Create your views here.
 
 class SignUpView(View):
@@ -47,7 +53,36 @@ class SignInView(View):
         form_instance=SignInForm()
 
         return render(request,self.template_name,{"form":form_instance})
+    
+    def post(self,request,*args,**kwargs):
 
+        form_instance=SignInForm(request.POST)
+
+        if form_instance.is_valid():
+
+            uname=form_instance.cleaned_data.get("username")
+
+            pwd=form_instance.cleaned_data.get("password")
+
+            user_object=authenticate(request,username=uname,password=pwd)
+
+            if user_object:
+
+                login(request,user_object)
+
+                return redirect("exp-all")
+            
+        return render(request,self.template_name,{"form":form_instance})
+    
+class SignOutView(View):
+
+    def get(self,request,*args,**kwargs):
+
+        logout(request)
+
+        return redirect("login")
+
+@method_decorator(signin_required,name="dispatch")
 class ExpenseAddView(View):
 
     def get(self,request,*args,**kwargs):
@@ -62,6 +97,8 @@ class ExpenseAddView(View):
 
         if form_instance.is_valid:
 
+            form_instance.instance.user=request.user
+
             form_instance.save()
 
             messages.success(request,"Added succesfully")
@@ -74,6 +111,8 @@ class ExpenseAddView(View):
 
             return render(request,"expense_create.html",{"form":form_instance})
         
+
+@method_decorator(signin_required,name="dispatch")
 class ExpenseListView(View):
         
     def get(self,request,*args,**kwargs):
@@ -95,7 +134,8 @@ class ExpenseListView(View):
             qs=Expense.objects.filter(title__icontains=search_txt)
 
         return render(request,"expense_list.html",{"expense":qs,"selected":selected_category})
-    
+
+@method_decorator(signin_required,name="dispatch")
 class ExpenseDetailView(View):
 
     def get(self,request,*args,**kwargs):
@@ -105,7 +145,8 @@ class ExpenseDetailView(View):
         qs=Expense.objects.get(id=id)
 
         return render(request,"expense_detail.html",{"form":qs})
-    
+
+@method_decorator(signin_required,name="dispatch")
 class ExpenseUpdateView(View):
 
     def get(self,request,*args,**kwargs):
@@ -140,7 +181,8 @@ class ExpenseUpdateView(View):
             messages.error(request,"error")
 
             return render(request,"expense_edit.html",{"form":form_instance})
-        
+
+@method_decorator(signin_required,name="dispatch")
 class ExpenseDeleteView(View):
 
     def get(self,request,*args,**kwargs):
