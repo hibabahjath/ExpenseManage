@@ -16,6 +16,8 @@ from django.utils.decorators import method_decorator
 
 from budget.decorators import signin_required
 
+from django.views.decorators.cache import never_cache
+
 # Create your views here.
 
 class SignUpView(View):
@@ -82,7 +84,9 @@ class SignOutView(View):
 
         return redirect("login")
 
-@method_decorator(signin_required,name="dispatch")
+decs=[signin_required,never_cache]
+
+@method_decorator(decs,name="dispatch")
 class ExpenseAddView(View):
 
     def get(self,request,*args,**kwargs):
@@ -111,8 +115,9 @@ class ExpenseAddView(View):
 
             return render(request,"expense_create.html",{"form":form_instance})
         
+decs=[signin_required,never_cache]
 
-@method_decorator(signin_required,name="dispatch")
+@method_decorator(decs,name="dispatch")
 class ExpenseListView(View):
         
     def get(self,request,*args,**kwargs):
@@ -135,7 +140,9 @@ class ExpenseListView(View):
 
         return render(request,"expense_list.html",{"expense":qs,"selected":selected_category})
 
-@method_decorator(signin_required,name="dispatch")
+decs=[signin_required,never_cache]
+
+@method_decorator(decs,name="dispatch")
 class ExpenseDetailView(View):
 
     def get(self,request,*args,**kwargs):
@@ -146,7 +153,9 @@ class ExpenseDetailView(View):
 
         return render(request,"expense_detail.html",{"form":qs})
 
-@method_decorator(signin_required,name="dispatch")
+decs=[signin_required,never_cache]
+
+@method_decorator(decs,name="dispatch")
 class ExpenseUpdateView(View):
 
     def get(self,request,*args,**kwargs):
@@ -182,7 +191,9 @@ class ExpenseUpdateView(View):
 
             return render(request,"expense_edit.html",{"form":form_instance})
 
-@method_decorator(signin_required,name="dispatch")
+decs=[signin_required,never_cache]
+
+@method_decorator(decs,name="dispatch")
 class ExpenseDeleteView(View):
 
     def get(self,request,*args,**kwargs):
