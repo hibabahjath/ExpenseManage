@@ -8,6 +8,8 @@ from django.contrib import messages
 
 from budget.models import Expense
 
+from django.db.models import Count
+
 from django.contrib.auth.models import User
 
 from django.contrib.auth import authenticate,login,logout
@@ -136,7 +138,7 @@ class ExpenseListView(View):
 
         if search_txt != None:
 
-            qs=Expense.objects.filter(title__icontains=search_txt)
+            qs=Expense.objects.filter(title__icontains=search_txt,category__icontains=search_txt)
 
         return render(request,"expense_list.html",{"expense":qs,"selected":selected_category})
 
@@ -180,7 +182,7 @@ class ExpenseUpdateView(View):
 
             Expense.objects.filter(id=id).update(**data)
 
-            messages.success(request,"Added succesfully")
+            messages.success(request,"upated succesfully")
 
 
             return redirect('exp-all')
@@ -204,6 +206,37 @@ class ExpenseDeleteView(View):
 
 
         return redirect('exp-all')
+    
+decs=[signin_required,never_cache]
+    
+@method_decorator(decs,name="dispatch")
+class ExpenseSummaryView(View):
+
+    def get(self,request,*args,**kwargs):
+
+        qs=Expense.objects.filter(user=request.user)
+
+        total_expense_count=qs.count()
+
+        category_summary=qs.values("category").annotate(cat_count=Count("category"))
+
+        print(category_summary)
+
+        # status_summary=qs.values("status").annotate(status_count=Count("status"))
+        # print(status_summary)
+
+        context={
+
+            "total_expense_count":total_expense_count,
+        
+            # "status_summary":status_summary,
+
+            "category_summary":category_summary,
+
+
+        }
+
+        return render(request,"dashboard.html",context)
     
 
     

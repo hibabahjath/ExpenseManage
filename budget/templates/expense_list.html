@@ -36,7 +36,7 @@
             
         <div class="col-4">
 
-            <div class="card  mb-3" style="max-width: 18rem; background-color: lightblue;">
+            <div class="card  mb-3" style="max-width: 18rem; ">
                 <div class="card-header d-flex justify-content-between">
                     <div> {{e.user}} </div>
                  
@@ -52,9 +52,9 @@
                    
 
                     <div>
-                        <a class="btn btn-dark" href="{% url 'exp-edit' e.id %}" role="button">View</a>
+                        <a class="btn btn-primary" href="{% url 'exp-edit' e.id %}" role="button">View</a>
 
-                        <a class="btn btn-dark" href="{% url 'exp-delete' e.id %}" role="button">Delete</a>
+                        <a class="btn btn-primary" href="{% url 'exp-delete' e.id %}" role="button">Delete</a>
                     </div>
                     </div>
                 </div>

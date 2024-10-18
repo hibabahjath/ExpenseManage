@@ -1,0 +1,49 @@
+{%extends 'base.html'%}
+
+{%block main_block%}
+
+<center><h1 class="mt-3">Dashboard</h1></center>
+
+<div class="container ">
+    <div class="row">
+        
+            <div class="col-4"></div>
+            <div class="col-4">
+              <h3>Category Summary</h3>
+            <canvas id="myChart"></canvas>
+            </div>
+            <div class="col-4"></div>
+            
+        
+        
+    </div>
+</div>
+
+{%endblock%}
+{%block script_block%}
+
+<script>
+    const ctx = document.getElementById('myChart');
+  
+    new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: [{%for i in category_summary%} '{{i.category}}', {%endfor%}],
+        datasets: [{
+          label: '# of Votes',
+          data: [{%for i in category_summary%} '{{i.cat_count}}', {%endfor%}],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+        
+  </script>
+
+{%endblock%}
